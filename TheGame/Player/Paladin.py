@@ -15,5 +15,5 @@ class Paladin(Charcter):
             raise ValueError("Nivel introducido no existente")
         Charcter.__init__(self, name, hp, 16, 0, "PJ", lvl)
         self.setHa(Tajo(lvl))
-        self.setHa(Escudo(lvl))
         self.setHa(Estocada(lvl))
+        self.setHa(Escudo(lvl))

@@ -17,17 +17,21 @@ pa = Paladin("Jhon", 1)
 m = Mago("Gandalf the green", 1)
 lvl1 = [RataGigante, Lobo, Ladron]
 lvl2 = [JefeLadron, LoboGigante]
-lvl3 = {Asesino, LoboTerrible}
+lvl3 = [Asesino, LoboTerrible]
 
 
 def intro():
-    print("Bienvenido a proyecto entornos, este es una pequña demo de un juego de rol por turnos. Es decir encarnaras\n"
+    print("\nBienvenido a proyecto entornos, este es una pequña demo de un juego de rol por turnos. Es decir "
+          "encarnaras\n "
           "a uno de los tres valiente personajes jugables en su pequeña aventura por atravesar un misterios y espeso \n"
           "bosque.\n"
           "\n"
-          "Las reglas son sencillas, comenzaras a nivel 1 e iras teniendo encuentros aleatorios con criaturas del bosque\n"
-          "que querran atacarte y matarte. Si pierdes toda tu vida se acabara la partida, pero si consigues vencer a tus\n"
-          "adversarios avanzaras al siguiente encuentro y asi sucesivamente hasta alcanzar el siguiente nivel. Por ultimo\n"
+          "Las reglas son sencillas, comenzaras a nivel 1 e iras teniendo encuentros aleatorios con criaturas del "
+          "bosque\n "
+          "que querran atacarte y matarte. Si pierdes toda tu vida se acabara la partida, pero si consigues vencer a "
+          "tus\n "
+          "adversarios avanzaras al siguiente encuentro y asi sucesivamente hasta alcanzar el siguiente nivel. Por "
+          "ultimo\n "
           "a lo largo del camino hay la posibildad de encontrar o no objetos que te ayuden en tu viaje.\n\n"
           "Los personajes jugables son:\n"
           "1.Picaro\n"
@@ -129,36 +133,40 @@ def generarlvl1():
 
 
 def generarlvl2():
-    enemy = lvl1[randint(0, 2)]
+    enemy = lvl2[randint(0, 1)]
     return enemy()
 
 
 def generarlvl3():
-    enemy = lvl1[randint(0, 2)]
+    enemy = lvl3[randint(0, 1)]
     return enemy()
 
 
 def encuentro(pj):
-    i = 1
-    if pj.getLvl() == 1:
-        enemy = generarlvl1()
-    elif pj.getLvl() == 2:
-        enemy = generarlvl2()
-    elif pj.getLvl() == 3:
-        enemy = generarlvl3()
-    print("-----------------------------------")
-    print(pj.getName(), " vs ", enemy.getName())
-    while enemy.getHp() > 0 and pj.getHp() > 0:
-        print("------------------------")
-        print("Turno", str(i))
-        turnoPj(pj, enemy)
-        if enemy.getHp() > 0:
-            turnoEnemy(enemy, pj)
-        i = i + 1
-    if pj.getHp() <= 0:
-        print("Derrota!")
-    else:
-        print("Victoria!")
+    for i in range(3):
+        i = 1
+        if pj.getLvl() == 1:
+            enemy = generarlvl1()
+        elif pj.getLvl() == 2:
+            enemy = generarlvl2()
+        elif pj.getLvl() == 3:
+            enemy = generarlvl3()
+        print("-----------------------------------")
+        print(pj.getName(), " vs ", enemy.getName())
+        while enemy.getHp() > 0 and pj.getHp() > 0:
+            print("------------------------")
+            print("Turno", str(i))
+            turnoPj(pj, enemy)
+            if enemy.getHp() > 0:
+                turnoIA(enemy, pj)
+            i = i + 1
+        if pj.getHp() <= 0:
+            print("Derrota!")
+            Menu()
+        else:
+            print("Victoria!")
+            pj.setLvl(pj.getLvl() + 1)
+            pj.resetHp()
 
 
 def atkNormal(attacker, attacked, action):
@@ -182,7 +190,6 @@ def atkNormal(attacker, attacked, action):
                 damage = attacker.getHa()[1].damage()
                 attacked.resthp(damage)
                 return print(attacked.getName(), " a recibido ", str(damage), " daño")
-
         elif esquiva == 1:
             return print("Atque esquivado!")
 
@@ -193,7 +200,7 @@ def turnoPj(pj, enemy):
     atkNormal(pj, enemy, op)
 
 
-def turnoEnemy(enemy, pj):
+def turnoIA(enemy, pj):
     print("-----------------------------\n"
           "Ataca ", enemy.getName(), "\n"
                                      "HP de", enemy.getName(), enemy.getHp())

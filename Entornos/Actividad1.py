@@ -12,7 +12,7 @@ def calculoPrecio(tipo,tamaño,cantidad):
         elif tipo==TIPOB:
             precio=PRECIOB
     else:
-
+        print("F")
 def main():
     precioFinal=0
     print("Venta de Uvas")
