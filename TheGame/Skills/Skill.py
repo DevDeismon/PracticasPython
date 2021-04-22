@@ -49,6 +49,28 @@ class Skill:
     def setCooldown(self, Y):
         self.__cooldown = Y
 
+    def probability(self):
+        if self.getLvl() == 1:
+            r = uniform(0, 1)
+            if r <= 0.75:
+                return 0
+            elif r >= 0.76:
+                return 1
+        elif self.getLvl() == 2:
+            r = uniform(0, 1)
+            if r <= 0.50:
+                return 0
+            elif r >= 0.51:
+                return 1
+        elif self.getLvl() == 3:
+            r = uniform(0, 1)
+            if r <= 0.24:
+                return 0
+            elif r >= 0.25:
+                return 1
+        else:
+            raise ValueError("Nivel introducido no existente")
+
 
 class Tajo(Skill):
     def __init__(self, lvl):
@@ -73,54 +95,39 @@ class Esquiva(Skill):
         Skill.__init__(self, "Esquiva", "Probabilidad de evitar el daño", lvl, 0, 0)
 
     def esquivar(self):
-        if self.getLvl() == 1:
-            r = uniform(0, 1)
-            if r <= 0.75:
-                return 0
-            elif r >= 0.76:
-                return 1
-        elif self.getLvl() == 2:
-            r = uniform(0, 1)
-            if r <= 0.50:
-                return 0
-            elif r >= 0.51:
-                return 1
-        elif self.getLvl() == 3:
-            r = uniform(0, 1)
-            if r <= 0.24:
-                return 0
-            elif r >= 0.25:
-                return 1
-        else:
-            raise ValueError("Nivel introducido no existente")
+        return self.probability()
 
 
 class Furtivo(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Furtivo", "Puñalada trapera con probabilidad de critico", lvl, 0, 2)
 
-    def furtivo(self):
+    def damage(self):
         if self.getLvl() == 1:
-            self.setDamage(randint(3, 6))
-            r = uniform(0, 1)
-            if r <= 0.75:
-                return 0
-            elif r >= 0.76:
-                return 1
+            # Comprobamos is hay critico.
+            if self.probability() == 1:
+                print("Critico!")
+                self.setDamage(randint(2, 5) + 0.5)
+            elif self.probability() == 0:
+                self.setDamage(randint(2, 5))
+
+            return self.getDamage()
         elif self.getLvl() == 2:
-            self.setDamage(randint(4, 7))
-            r = uniform(0, 1)
-            if r <= 0.50:
-                return 0
-            elif r >= 0.51:
-                return 1
+
+            if self.probability() == 1:
+                self.setDamage(randint(3, 6) + 1)
+            elif self.probability() == 0:
+                self.setDamage(randint(3, 6))
+
+            return self.getDamage()
         elif self.getLvl() == 3:
-            self.setDamage(randint(5, 8))
-            r = uniform(0, 1)
-            if r <= 0.24:
-                return 0
-            elif r >= 0.25:
-                return 1
+
+            if self.probability() == 1:
+                self.setDamage(randint(4, 7) + 1.5)
+            elif self.probability() == 0:
+                self.setDamage(randint(4, 7))
+
+            return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
 
@@ -129,28 +136,16 @@ class Mordisco(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Mordico", "Ataque realizado por un animal para hacer daño", lvl, 0, 1)
 
-    def mordisco(self):
+    def damage(self):
         if self.getLvl() == 1:
             self.setDamage(randint(2, 3))
-            r = uniform(0, 1)
-            if r <= 0.75:
-                return 0
-            elif r >= 0.76:
-                return 1
+            return self.getDamage()
         elif self.getLvl() == 2:
             self.setDamage(randint(4, 5))
-            r = uniform(0, 1)
-            if r <= 0.50:
-                return 0
-            elif r >= 0.51:
-                return 1
+            return self.getDamage()
         elif self.getLvl() == 3:
             self.setDamage(randint(6, 7))
-            r = uniform(0, 1)
-            if r <= 0.24:
-                return 0
-            elif r >= 0.25:
-                return 1
+            return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
 
@@ -159,7 +154,7 @@ class Zarpazo(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Zarpazo", "Ataque realizado por un animal para hacer daño", lvl, 0, 1)
 
-    def zarpazo(self):
+    def damage(self):
         if self.getLvl() == 1:
             self.setDamage(randint(4, 5))
             return self.getDamage()
@@ -207,7 +202,7 @@ class Estocada(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Estocada", "Ataque en linea recta", lvl, 0, 2)
 
-    def estocada(self):
+    def damage(self):
         if self.getLvl() == 1:
             self.setDamage(randint(2, 9))
             return self.getDamage()
