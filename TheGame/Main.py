@@ -1,23 +1,66 @@
+import os
 from random import randint
-from TheGame.IA import LoboTerrible
+
+from Player.Picaro import Picaro
+from Player.Paladin import Paladin
+from Player.Mago import Mago
 from TheGame.IA.Asesino import Asesino
 from TheGame.IA.JefeLadron import JefeLadron
 from TheGame.IA.Ladron import Ladron
 from TheGame.IA.Lobo import Lobo
 from TheGame.IA.LoboGigante import LoboGigante
+from TheGame.IA.LoboTerrible import LoboTerrible
 from TheGame.IA.RataGigante import RataGigante
-from TheGame.Player.Picaro import Picaro
-from TheGame.Player.Paladin import Paladin
-from TheGame.Player.Mago import Mago
-from TheGame.GameController import GameController
 
-gm = GameController()
 p = Picaro("Teobaldo", 1)
 pa = Paladin("Jhon", 1)
-m = Mago("Gandalf the green", 1)
+m = Mago("Copernico", 1)
 lvl1 = [RataGigante, Lobo, Ladron]
 lvl2 = [JefeLadron, LoboGigante]
 lvl3 = [Asesino, LoboTerrible]
+
+
+def Menu():
+    intro()
+    op = input()
+    if op == "1":
+        introPicaro()
+        op = input("S/N: ")
+        if op == "S" or op == "s":
+            encuentro(p)
+        elif op == "N" or op == "n":
+            Menu()
+        else:
+            print("==============================\nOpción erronea!\n==============================")
+            Menu()
+    elif op == "2":
+        introPaladin()
+        print("¿Deseas jugar con el Paladin?")
+        op = input("S/N: ")
+        if op == "S" or op == "s":
+            encuentro(pa)
+        elif op == "N" or op == "n":
+            Menu()
+        else:
+            print("==============================\nOpción erronea!\n==============================")
+            Menu()
+    elif op == "3":
+        introMago()
+        print("¿Deseas jugar con el Mago?")
+        op = input("S/N: ")
+        if op == "S" or op == "s":
+            encuentro(m)
+        elif op == "N" or op == "n":
+            Menu()
+        else:
+            print("==============================\nOpción erronea!\n==============================")
+            Menu()
+    elif op == "4":
+        print("Exit")
+        exit()
+    else:
+        print("==============================\nOpción erronea!\n==============================")
+        Menu()
 
 
 def intro():
@@ -42,6 +85,7 @@ def intro():
 
 
 def introPicaro():
+    p.resetAll()
     print("\nHas seleccionado al Picaro!\n"
           "Teobaldo es un pillin que vive de los robos y hurtos, actualmente se encuentra huyendo de su ciudad natal\n"
           "tras haber robado al noble que regenta la misma. Comienzas tu aventura en mitad del bosque tras estar\n"
@@ -57,6 +101,7 @@ def introPicaro():
 
 
 def introPaladin():
+    pa.resetAll()
     print("\nHas seleccionado al Paladin!\n"
           "John es una joven promesa que acaba de jurar los votos para su orden de caballeria,y como primera mision se\n"
           "le ha encargado capturar a un ladron que ha robado un objeto muy valioso para un noble de la región. El objeto\n"
@@ -73,6 +118,7 @@ def introPaladin():
 
 
 def introMago():
+    pa.resetAll()
     print("Sos un mago hermano")
 
     print("Perfil del Personaje:\n"
@@ -84,47 +130,37 @@ def introMago():
           , str(m.getHa()[2].getName()), "-", str(m.getHa()[2].getDesc()), ".")
 
 
-def Menu():
-    intro()
-    op = input()
-    if op == "1":
-        introPicaro()
-        op = input("S/N: ")
-        if op == "S" or op == "s":
-            encuentro(p)
-        elif op == "N" or op == "n":
+def encuentro(pj):
+    for x in range(3):
+        i = 1
+        if pj.getLvl() == 1:
+            enemy = generarlvl1()
+        elif pj.getLvl() == 2:
+            enemy = generarlvl2()
+        elif pj.getLvl() == 3:
+            enemy = generarlvl3()
+        print("-----------------------------------")
+        print(pj.getName(), " vs ", enemy.getName())
+        while enemy.getHp() > 0 and pj.getHp() > 0:
+            print("-----------------------------------")
+            print("Turno", str(i))
+            if pj.getName() == "Mago":
+                print("Cosas de Majos")
+            else:
+                turnoPj(pj, enemy, i)
+            if enemy.getHp() > 0:
+                turnoIA(enemy, pj)
+            i = i + 1
+        if pj.getHp() <= 0:
+            print("Derrota!")
             Menu()
         else:
-            print("------------\nOpción erronea!\n------------")
-            Menu()
-    elif op == "2":
-        introPaladin()
-        print("¿Deseas jugar con el Paladin?")
-        op = input("S/N: ")
-        if op == "S" or op == "s":
-            encuentro(pa)
-        elif op == "N" or op == "n":
-            Menu()
-        else:
-            print("------------\nOpción erronea!\n------------")
-            Menu()
-    elif op == "3":
-        introMago()
-        print("¿Deseas jugar con el Mago?")
-        op = input("S/N: ")
-        if op == "S" or op == "s":
-            encuentro(m)
-        elif op == "N" or op == "n":
-            Menu()
-        else:
-            print("------------\nOpción erronea!\n------------")
-            Menu()
-    elif op == "4":
-        print("Exit")
-        exit()
-    else:
-        print("------------\nOpción erronea!\n------------")
-        Menu()
+            print("Victoria!")
+            pj.setTimeOff(False)
+            if x == 2:
+                end()
+            else:
+                pj.lvlUp()
 
 
 def generarlvl1():
@@ -142,70 +178,37 @@ def generarlvl3():
     return enemy()
 
 
-def encuentro(pj):
-    for i in range(3):
-        i = 1
-        if pj.getLvl() == 1:
-            enemy = generarlvl1()
-        elif pj.getLvl() == 2:
-            enemy = generarlvl2()
-        elif pj.getLvl() == 3:
-            enemy = generarlvl3()
-        print("-----------------------------------")
-        print(pj.getName(), " vs ", enemy.getName())
-        while enemy.getHp() > 0 and pj.getHp() > 0:
-            print("------------------------")
-            print("Turno", str(i))
-            turnoPj(pj, enemy)
-            if enemy.getHp() > 0:
-                turnoIA(enemy, pj)
-            i = i + 1
-        if pj.getHp() <= 0:
-            print("Derrota!")
-            Menu()
-        else:
-            print("Victoria!")
-            pj.setLvl(pj.getLvl() + 1)
-            pj.resetHp()
-
-
-def atkNormal(attacker, attacked, action):
-    op = int(action)
-    for i in range(0, len(attacked.getHa())):
-        if attacked.getHa()[i].getName() == "Esquiva":
-            esquiva = attacked.getHa()[i].esquivar()
-    if op == 1:
-        if esquiva == 0:
-            damage = attacker.getHa()[0].damage()
-            attacked.resthp(damage)
-            return print(attacked.getName(), " a recibido ", str(damage), " daño")
-        elif esquiva == 1:
-            return print("Atque esquivado!")
-    if op == 2:
-        if esquiva == 0:
-            if attacker.getHa()[1].getName() == "Aullido":
-                cura = attacker.aullar(0)
-                return print(attacker.getName(), " aulla y se cura ", str(cura))
-            else:
-                damage = attacker.getHa()[1].damage()
-                attacked.resthp(damage)
-                return print(attacked.getName(), " a recibido ", str(damage), " daño")
-        elif esquiva == 1:
-            return print("Atque esquivado!")
-
-
-def turnoPj(pj, enemy):
+def turnoPj(pj, enemy, turn):
+    if turn == pj.getTiempoLimite():
+        pj.setTimeOff(False)
     pj.pullHa()
+
     op = input("Opción:")
-    atkNormal(pj, enemy, op)
+    while op == "2" and pj.getTimeOff():
+        print("==============================\nHabilidad en enfriamiento!\n==============================")
+        pj.pullHa()
+        op = input("Opcion:")
+    while op != "1" and op != "2":
+        print("==============================\nOpción incorrecta!\n==============================")
+        op = input("Opcion: ")
+
+    if op == "1":
+        pj.ataque(enemy, op)
+    elif op == "2":
+        pj.calcCoolDown(turn)
+        pj.setTimeOff(True)
+        pj.ataque(enemy, op)
 
 
 def turnoIA(enemy, pj):
-    print("-----------------------------\n"
-          "Ataca ", enemy.getName(), "\n"
-                                     "HP de", enemy.getName(), enemy.getHp())
+    print("HP de", enemy.getName(), ":", enemy.getHp(), "\n",
+          enemy.getName(), " realiza un ataque")
     atk = randint(1, 2)
-    atkNormal(enemy, pj, atk)
+    enemy.ataque(pj, atk)
+
+
+def end():
+    print("Henorabuena has sobrevivido al bosque, proximamente mas historia en proximas versiones")
 
 
 Menu()

@@ -1,2 +1,6 @@
+import TheGame.Player.Picaro
+
+
 class GameController(object):
-    print("")
+    p=TheGame.Player.Picaro.Picaro("Pedos",1)
+    print(p.getName())
