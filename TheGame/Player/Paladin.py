@@ -6,11 +6,11 @@ class Paladin(Charcter):
 
     def __init__(self, name, lvl):
         if lvl == 1:
-            hp = 13
+            hp = 15
         elif lvl == 2:
-            hp = 22
+            hp = 25
         elif lvl == 3:
-            hp = 31
+            hp = 35
         else:
             raise ValueError("Nivel introducido no existente")
         Charcter.__init__(self, name, hp, 2, 0, "PJ", lvl)
@@ -20,11 +20,11 @@ class Paladin(Charcter):
 
     def resetHp(self):
         if self.getLvl() == 1:
-            self.setHP(13)
+            self.setHP(15)
         elif self.getLvl() == 2:
-            self.setHP(22)
+            self.setHP(25)
         elif self.getLvl() == 3:
-            self.setHP(31)
+            self.setHP(35)
         else:
             raise ValueError("Nivel introducido no existente")
         self.cubrir()

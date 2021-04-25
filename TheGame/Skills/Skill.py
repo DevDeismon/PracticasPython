@@ -6,16 +6,14 @@ class Skill:
     __name = ""
     __desc = ""
     __pMCost = 0
-    __cooldown = 0
     __damage = 0
     __lvl = 0
 
     # constructor
-    def __init__(self, name, desc, lvl, Pm, coolDown):
+    def __init__(self, name, desc, lvl, Pm):
         self.__name = name
         self.__desc = desc
         self.__lvl = lvl
-        self.__cooldown = coolDown
         self.__pMCost = Pm
 
     # Getters/Setters
@@ -27,9 +25,6 @@ class Skill:
 
     def getDamage(self):
         return self.__damage
-
-    def getCooldown(self):
-        return self.__cooldown
 
     def getPmCost(self):
         return self.__pMCost
@@ -45,9 +40,6 @@ class Skill:
 
     def setDamage(self, Y):
         self.__damage = Y
-
-    def setCooldown(self, Y):
-        self.__cooldown = Y
 
     def setLvl(self, Y):
         self.__lvl = Y
@@ -77,7 +69,7 @@ class Skill:
 
 class Tajo(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Tajo", "Corte estandar para atacar al enemigo", lvl, 0, 1)
+        Skill.__init__(self, "Tajo", "Corte estandar para atacar al enemigo", lvl, 0)
 
     def damage(self):
         if self.getLvl() == 1:
@@ -87,7 +79,7 @@ class Tajo(Skill):
             self.setDamage(randint(3, 6))
             return self.getDamage()
         elif self.getLvl() == 3:
-            self.setDamage(randint(7, 8))
+            self.setDamage(randint(5, 8))
             return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
@@ -95,7 +87,7 @@ class Tajo(Skill):
 
 class Furtivo(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Furtivo", "Puñalada trapera con probabilidad de critico", lvl, 0, 2)
+        Skill.__init__(self, "Furtivo", "Puñalada trapera con probabilidad de critico", lvl, 0)
 
     def damage(self):
         if self.getLvl() == 1:
@@ -103,23 +95,24 @@ class Furtivo(Skill):
             if self.probability() == 1:
                 print("Critico!")
                 self.setDamage(randint(2, 5) + 0.5)
-            elif self.probability() == 0:
+            else:
                 self.setDamage(randint(2, 5))
             return self.getDamage()
+
         elif self.getLvl() == 2:
             if self.probability() == 1:
                 print("Critico!")
                 self.setDamage(randint(3, 6) + 1)
-            elif self.probability() == 0:
+            else:
                 self.setDamage(randint(3, 6))
             return self.getDamage()
 
         elif self.getLvl() == 3:
             if self.probability() == 1:
                 print("Critico!")
-                self.setDamage(randint(7, 8) + 1.5)
-            elif self.probability() == 0:
-                self.setDamage(randint(7, 8))
+                self.setDamage(randint(5, 8) + 1.5)
+            else:
+                self.setDamage(randint(5, 8))
             return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
@@ -127,7 +120,7 @@ class Furtivo(Skill):
 
 class Mordisco(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Mordico", "Ataque realizado por un animal para hacer daño", lvl, 0, 1)
+        Skill.__init__(self, "Mordico", "Ataque realizado por un animal para hacer daño", lvl, 0)
 
     def damage(self):
         if self.getLvl() == 1:
@@ -157,7 +150,7 @@ class Mordisco(Skill):
 
 class Zarpazo(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Zarpazo", "Ataque realizado por un animal para hacer daño", lvl, 0, 1)
+        Skill.__init__(self, "Zarpazo", "Ataque realizado por un animal para hacer daño", lvl, 0)
 
     def damage(self):
         if self.getLvl() == 1:
@@ -175,7 +168,7 @@ class Zarpazo(Skill):
 
 class Estocada(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Estocada", "Ataque en linea recta", lvl, 0, 2)
+        Skill.__init__(self, "Estocada", "Ataque en linea recta", lvl, 0)
 
     def damage(self):
         if self.getLvl() == 1:
@@ -194,7 +187,7 @@ class Estocada(Skill):
 class ArmaduradeAgahtis(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Armadura de Agahtis", "Armadura magica que umenta la vida y produce daño a los enemigos",
-                       lvl, 5, 1)
+                       lvl, 5)
 
     def armadura(self):
         print("")
@@ -202,69 +195,73 @@ class ArmaduradeAgahtis(Skill):
 
 class LlamaSagrada(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Llama Sagrada", "Ataque incenciario", lvl, 5, 0)
+        Skill.__init__(self, "Llama Sagrada", "Ataque incenciario", lvl, 5)
 
 
 class BoladeFuego(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Bola de fuego", "Ataque incendiario que hace mucho daño", lvl, 15, 0)
+        Skill.__init__(self, "Bola de fuego", "Ataque incendiario que hace mucho daño", lvl, 15)
 
 
 class Esquiva(Skill):
+    esquiva = 0
+    r = 0
+
     def __init__(self, lvl):
-        Skill.__init__(self, "Esquiva", "Probabilidad de evitar el daño", lvl, 0, 0)
+        Skill.__init__(self, "Esquiva", "Probabilidad de evitar el daño", lvl, 0)
 
     def __probability(self, chracter):
         if chracter.getType() == "IA":
             if self.getLvl() == 1:
-                r = uniform(0, 1)
-                if r <= 0.65:
+                self.r = uniform(0, 1)
+                if self.r <= 0.85:
                     return 0
-                elif r >= 0.66:
+                elif self.r >= 0.86:
                     return 1
             elif self.getLvl() == 2:
-                r = uniform(0, 1)
-                if r <= 0.40:
+                self.r = uniform(0, 1)
+                if self.r <= 0.60:
                     return 0
-                elif r >= 0.41:
+                elif self.r >= 0.61:
                     return 1
             elif self.getLvl() == 3:
-                r = uniform(0, 1)
-                if r <= 0.14:
+                self.r = uniform(0, 1)
+                if self.r <= 0.34:
                     return 0
-                elif r >= 0.15:
+                elif self.r >= 0.35:
                     return 1
             else:
                 raise ValueError("Nivel introducido no existente")
         else:
             if self.getLvl() == 1:
-                r = uniform(0, 1)
-                if r <= 0.75:
+                self.r = uniform(0, 1)
+                if self.r <= 0.75:
                     return 0
-                elif r >= 0.76:
+                elif self.r >= 0.76:
                     return 1
             elif self.getLvl() == 2:
-                r = uniform(0, 1)
-                if r <= 0.50:
+                self.r = uniform(0, 1)
+                if self.r <= 0.50:
                     return 0
-                elif r >= 0.51:
+                elif self.r >= 0.51:
                     return 1
             elif self.getLvl() == 3:
-                r = uniform(0, 1)
-                if r <= 0.24:
+                self.r = uniform(0, 1)
+                if self.r <= 0.24:
                     return 0
-                elif r >= 0.25:
+                elif self.r >= 0.25:
                     return 1
             else:
                 raise ValueError("Nivel introducido no existente")
 
     def esquivar(self, character):
-        return self.__probability(character)
+        self.esquiva = self.__probability(character)
+        return self.esquiva
 
 
 class Aullido(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Aullido", "Habildad usada para curarse", lvl, 0, 0)
+        Skill.__init__(self, "Aullido", "Habildad usada para curarse", lvl, 0)
 
     def aullido(self):
         if self.getLvl() == 1:
@@ -279,7 +276,7 @@ class Aullido(Skill):
 
 class Escudo(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Escudo", "Aumenta ligeramente la Ca", lvl, 0, 0)
+        Skill.__init__(self, "Escudo", "Aumenta ligeramente la Ca", lvl, 0)
 
     def escudo(self):
         if self.getLvl() == 1:

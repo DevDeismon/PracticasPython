@@ -19,10 +19,10 @@ class Picaro(Charcter):
 
     def resetHp(self):
         if self.getLvl() == 1:
-            self.setHP(11)
+            self.setHP(15)
         elif self.getLvl() == 2:
             self.setHP(19)
         elif self.getLvl() == 3:
-            self.setHP(27)
+            self.setHP(29)
         else:
             raise ValueError("Nivel introducido no existente")

@@ -73,30 +73,39 @@ class Charcter(object):
         self.__type = Y
 
     # Other Methods
+    # Resta vida al Character
     def resthp(self, damage):
         self.setHP(self.getHp() - damage)
 
+    # Realiza un ataque contra un objetivo
     def ataque(self, attacked, action):
+        # Recogemos la opcion y la convertimos en un Integer
         op = int(action)
+        # Comprobamos si el Objetivo del ataque tiene la habilidad de esquiva, y si es asi, recogemos el valor para
+        # ver si esquiva o no
         esquiva = self.__compEsquiva(attacked)
-        if op == 1:
-            if esquiva == 0:
+        if esquiva == 1:
+            print("Ataque esquivado!")
+        else:
+            # En función de la opcion elegia por la IA o el ususario se realizara un ataque u otro
+            if op == 1:
+                # En caso de que sea la IA quien ataque comprobamos si el objetivo tiene la etiqueta PJ si es asi se
+                # realiza el ataque pero reducido por la CA del Jugador
                 if attacked.getType() == "PJ":
                     damage = self.getHa()[0].damage() - attacked.getCa()
                     if damage < 0:
                         damage = 0
                     attacked.resthp(damage)
-                    print("-----------------------------------\n", attacked.getName(), " a recibido ", str(damage),
+                    print(attacked.getName(), " a recibido ", str(damage),
                           " daño reducido por la CA")
                 else:
                     damage = self.getHa()[0].damage()
                     attacked.resthp(damage)
-                    print("-----------------------------------\n", attacked.getName(), " a recibido ", str(damage),
+                    print(attacked.getName(), " a recibido ", str(damage),
                           " daño")
-            elif esquiva == 1:
-                print("-----------------------------------\nAtque esquivado!")
-        elif op == 2:
-            if esquiva == 0:
+            elif op == 2:
+                # Para la opcion 2 tenemos lo mismo que en la opción uno con un pequeño cambio, Si la IA tiene la
+                # etiqueta de Lobo, Lobo Gigante o Lobo Terrible, este efectuara un ataque especial de curarse.
                 if self.getName() == "Lobo" or self.getName() == "Lobo Gigante" or self.getName() == "Lobo Terrible":
                     print("El lobo se a curado ", str(self.aullar()), " HP\n",
                           "Vida actual:", self.getHp())
@@ -105,19 +114,19 @@ class Charcter(object):
                     if damage < 0:
                         damage = 0
                     attacked.resthp(damage)
-                    print("-----------------------------------\n", attacked.getName(), " a recibido ", str(damage),
+                    print(attacked.getName(), " a recibido ", str(damage),
                           " daño reducido por la CA")
                 else:
                     damage = self.getHa()[1].damage()
                     attacked.resthp(damage)
-                    print("-----------------------------------\n", attacked.getName(), " a recibido ", str(damage),
+                    print(attacked.getName(), " a recibido ", str(damage),
                           " daño")
-            elif esquiva == 1:
-                print("-----------------------------------\nAtaque esquivado!")
 
+    # Calcula el tiempo de enfriamiento de ciertas habilidades
     def calcCoolDown(self, tActual):
         self.__tl = tActual + 3
 
+    # Se resetean todos los valores del Character
     def resetAll(self):
         if self.getLvl() >= 1:
             self.setLvl(1)
@@ -126,6 +135,7 @@ class Charcter(object):
             self.getHa()[i].setLvl(1)
         self.setTimeOff(False)
 
+    # Muestra el pull de Habilidades del CHaracter. Si esta activo el cooldown, mostrara otro pull
     def pullHa(self):
         if self.getTimeOff():
             print("Ataca ", self.getName(), "\n"
@@ -146,6 +156,7 @@ class Charcter(object):
                   "2.", self.getHa()[1].getName(),
                   "(Activa enfriamiento 2 turnos)")
 
+    # Efectua una subida de nivel al Character
     def lvlUp(self):
         self.setLvl(self.getLvl() + 1)
         for i in range(3):

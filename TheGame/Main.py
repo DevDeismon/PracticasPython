@@ -20,6 +20,7 @@ lvl2 = [JefeLadron, LoboGigante]
 lvl3 = [Asesino, LoboTerrible]
 
 
+# Menu principal del JUego
 def Menu():
     intro()
     op = input()
@@ -63,6 +64,7 @@ def Menu():
         Menu()
 
 
+# Texto introductorio
 def intro():
     print("\nBienvenido a proyecto entornos, este es una pequña demo de un juego de rol por turnos. Es decir "
           "encarnaras\n "
@@ -84,6 +86,8 @@ def intro():
           "Opcion:", end="")
 
 
+# -----------------------------------\n
+# Texto introductorio para le personaje Picaro
 def introPicaro():
     p.resetAll()
     print("\nHas seleccionado al Picaro!\n"
@@ -100,6 +104,7 @@ def introPicaro():
     print("¿Deseas jugar con el Picaro?")
 
 
+# Texto introductorio para le personaje Paladin
 def introPaladin():
     pa.resetAll()
     print("\nHas seleccionado al Paladin!\n"
@@ -117,6 +122,7 @@ def introPaladin():
           , str(pa.getHa()[2].getName()), "-", str(p.getHa()[2].getDesc()), ".")
 
 
+# Texto introductorio para le personaje Mago
 def introMago():
     pa.resetAll()
     print("Sos un mago hermano")
@@ -130,6 +136,7 @@ def introMago():
           , str(m.getHa()[2].getName()), "-", str(m.getHa()[2].getDesc()), ".")
 
 
+# Es el controlador de turnos y cuando ha ganado el Jugador o la IA
 def encuentro(pj):
     for x in range(3):
         i = 1
@@ -163,6 +170,7 @@ def encuentro(pj):
                 pj.lvlUp()
 
 
+# Genera un enemigo según el nivel del Jugador
 def generarlvl1():
     enemy = lvl1[randint(0, 2)]
     return enemy()
@@ -178,19 +186,23 @@ def generarlvl3():
     return enemy()
 
 
+# Controlador del turno del Jugador
 def turnoPj(pj, enemy, turn):
     if turn == pj.getTiempoLimite():
         pj.setTimeOff(False)
     pj.pullHa()
 
     op = input("Opción:")
+    print("-----------------------------------\n")
     while op == "2" and pj.getTimeOff():
         print("==============================\nHabilidad en enfriamiento!\n==============================")
         pj.pullHa()
         op = input("Opcion:")
+        print("-----------------------------------\n")
     while op != "1" and op != "2":
         print("==============================\nOpción incorrecta!\n==============================")
         op = input("Opcion: ")
+        print("-----------------------------------\n")
 
     if op == "1":
         pj.ataque(enemy, op)
@@ -200,6 +212,7 @@ def turnoPj(pj, enemy, turn):
         pj.ataque(enemy, op)
 
 
+# Controlador del turno de la IA
 def turnoIA(enemy, pj):
     print("HP de", enemy.getName(), ":", enemy.getHp(), "\n",
           enemy.getName(), " realiza un ataque")
@@ -207,6 +220,7 @@ def turnoIA(enemy, pj):
     enemy.ataque(pj, atk)
 
 
+# Texto Final de Juego
 def end():
     print("Henorabuena has sobrevivido al bosque, proximamente mas historia en proximas versiones")
 
