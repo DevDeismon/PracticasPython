@@ -83,7 +83,7 @@ class Charcter(object):
         op = int(action)
         # Comprobamos si el Objetivo del ataque tiene la habilidad de esquiva, y si es asi, recogemos el valor para
         # ver si esquiva o no
-        esquiva = self.__compEsquiva(attacked)
+        esquiva = self.compEsquiva(attacked)
         if esquiva == 1:
             print("Ataque esquivado!")
         else:
@@ -92,6 +92,13 @@ class Charcter(object):
                 # En caso de que sea la IA quien ataque comprobamos si el objetivo tiene la etiqueta PJ si es asi se
                 # realiza el ataque pero reducido por la CA del Jugador
                 if attacked.getType() == "PJ":
+                    if attacked.getName() == "Copernico":
+                        f = attacked.getHa[0].getDamageOn()
+                        if f:
+                            damage = attacked.getHa[0].damage()
+                            self.resthp(damage)
+                            print(self.getName(), " ha recibido ", str(damage), " daño de la armadura magica")
+
                     damage = self.getHa()[0].damage() - attacked.getCa()
                     if damage < 0:
                         damage = 0
@@ -110,6 +117,13 @@ class Charcter(object):
                     print("El lobo se a curado ", str(self.aullar()), " HP\n",
                           "Vida actual:", self.getHp())
                 elif attacked.getType() == "PJ":
+                    if attacked.getName() == "Copernico":
+                        f = attacked.getHa[0].getDamageOn()
+                        if f:
+                            damage = attacked.getHa[0].damage()
+                            self.resthp(damage)
+                            print(self.getName(), " ha recibido ", str(damage), " daño de la armadura magica")
+
                     damage = self.getHa()[1].damage() - attacked.getCa()
                     if damage < 0:
                         damage = 0
@@ -158,12 +172,15 @@ class Charcter(object):
 
     # Efectua una subida de nivel al Character
     def lvlUp(self):
+        self.setTimeOff(False)
         self.setLvl(self.getLvl() + 1)
         for i in range(3):
             self.getHa()[i].setLvl(self.getHa()[i].getLvl() + 1)
         self.resetHp()
+        if self.getName() == "Copernico":
+            self.setPm()
 
-    def __compEsquiva(self, attacked):
+    def compEsquiva(self, attacked):
         esquiva = 0
         for i in range(0, len(attacked.getHa())):
             if attacked.getHa()[i].getName() == "Esquiva":

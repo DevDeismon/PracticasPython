@@ -10,11 +10,11 @@ class Skill:
     __lvl = 0
 
     # constructor
-    def __init__(self, name, desc, lvl, Pm):
+    def __init__(self, name, desc, lvl, pM):
         self.__name = name
         self.__desc = desc
         self.__lvl = lvl
-        self.__pMCost = Pm
+        self.__pMCost = pM
 
     # Getters/Setters
     def getName(self):
@@ -28,6 +28,9 @@ class Skill:
 
     def getPmCost(self):
         return self.__pMCost
+
+    def setPmCost(self, Y):
+        self.__pMCost = Y
 
     def getLvl(self):
         return self.__lvl
@@ -185,22 +188,83 @@ class Estocada(Skill):
 
 
 class ArmaduradeAgahtis(Skill):
+    __damageOn = False
+
     def __init__(self, lvl):
         Skill.__init__(self, "Armadura de Agahtis", "Armadura magica que umenta la vida y produce daño a los enemigos",
                        lvl, 5)
 
-    def armadura(self):
-        print("")
+    def getDamageOn(self):
+        return self.__damageOn
+
+    def setDamageOn(self, Y):
+        self.__damageOn = Y
+
+    def lvlup(self):
+        if self.getLvl() == 1:
+            self.setPmCost(5)
+        elif self.getLvl() == 2:
+            self.setPmCost(10)
+        elif self.getLvl() == 3:
+            self.setPmCost(15)
+
+    def armadura(self, player):
+        if self.getLvl() == 1:
+            player.setHP(player.getHp() + 3)
+        elif self.getLvl() == 2:
+            player.setHP(player.getHp() + 5)
+        elif self.getLvl() == 3:
+            player.setHP(player.getHp() + 7)
+        self.setDamageOn(True)
+
+    def damage(self):
+        if self.getLvl() == 1:
+            self.setDamage(randint(1, 4))
+            return self.getDamage()
+        elif self.getLvl() == 2:
+            self.setDamage(randint(3, 6))
+            return self.getDamage()
+        elif self.getLvl() == 3:
+            self.setDamage(randint(5, 8))
+            return self.getDamage()
+        else:
+            raise ValueError("Nivel introducido no existente")
 
 
 class LlamaSagrada(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Llama Sagrada", "Ataque incenciario", lvl, 5)
 
+    def damage(self):
+        if self.getLvl() == 1:
+            self.setDamage(randint(2, 5))
+            return self.getDamage()
+        elif self.getLvl() == 2:
+            self.setDamage(randint(4, 7))
+            return self.getDamage()
+        elif self.getLvl() == 3:
+            self.setDamage(randint(6, 9))
+            return self.getDamage()
+        else:
+            raise ValueError("Nivel introducido no existente")
+
 
 class BoladeFuego(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Bola de fuego", "Ataque incendiario que hace mucho daño", lvl, 15)
+
+    def damage(self):
+        if self.getLvl() == 1:
+            self.setDamage(randint(3, 6))
+            return self.getDamage()
+        elif self.getLvl() == 2:
+            self.setDamage(randint(5, 8))
+            return self.getDamage()
+        elif self.getLvl() == 3:
+            self.setDamage(randint(7, 10))
+            return self.getDamage()
+        else:
+            raise ValueError("Nivel introducido no existente")
 
 
 class Esquiva(Skill):

@@ -1,4 +1,3 @@
-import os
 from random import randint
 
 from Player.Picaro import Picaro
@@ -20,7 +19,7 @@ lvl2 = [JefeLadron, LoboGigante]
 lvl3 = [Asesino, LoboTerrible]
 
 
-# Menu principal del JUego
+# Menu principal del Juego
 def Menu():
     intro()
     op = input()
@@ -124,16 +123,19 @@ def introPaladin():
 
 # Texto introductorio para le personaje Mago
 def introMago():
-    pa.resetAll()
+    m.resetAll()
     print("Sos un mago hermano")
 
     print("Perfil del Personaje:\n"
           "Nombre: ", str(m.getName()), "\n"
                                         "Vida:", str(m.getHp()), "\n"
                                                                  "Habilidades:\n"
-          , str(m.getHa()[0].getName()), "-", str(m.getHa()[0].getDesc()), ".\n"
-          , str(m.getHa()[1].getName()), "-", str(m.getHa()[1].getDesc()), ". \n"
-          , str(m.getHa()[2].getName()), "-", str(m.getHa()[2].getDesc()), ".")
+          , str(m.getHa()[0].getName()), "-", str(m.getHa()[0].getDesc()), ". (Coste de puntos magicos:)",
+          m.getHa()[0].getPmCost(), "\n"
+          , str(m.getHa()[1].getName()), "-", str(m.getHa()[1].getDesc()), ". (Coste de puntos magicos:)",
+          m.getHa()[1].getPmCost(), "\n"
+          , str(m.getHa()[2].getName()), "-", str(m.getHa()[2].getDesc()), ". (Coste de puntos magicos:)",
+          m.getHa()[2].getPmCost())
 
 
 # Es el controlador de turnos y cuando ha ganado el Jugador o la IA
@@ -151,8 +153,8 @@ def encuentro(pj):
         while enemy.getHp() > 0 and pj.getHp() > 0:
             print("-----------------------------------")
             print("Turno", str(i))
-            if pj.getName() == "Mago":
-                print("Cosas de Majos")
+            if pj.getName() == "Copernico":
+                turnoMagico(pj, enemy)
             else:
                 turnoPj(pj, enemy, i)
             if enemy.getHp() > 0:
@@ -163,7 +165,6 @@ def encuentro(pj):
             Menu()
         else:
             print("Victoria!")
-            pj.setTimeOff(False)
             if x == 2:
                 end()
             else:
@@ -199,8 +200,10 @@ def turnoPj(pj, enemy, turn):
         pj.pullHa()
         op = input("Opcion:")
         print("-----------------------------------\n")
+
     while op != "1" and op != "2":
         print("==============================\nOpción incorrecta!\n==============================")
+        pj.pullHa()
         op = input("Opcion: ")
         print("-----------------------------------\n")
 
@@ -220,9 +223,26 @@ def turnoIA(enemy, pj):
     enemy.ataque(pj, atk)
 
 
+def turnoMagico(pj, enemy):
+    if pj.getPm() < 20:
+        pj.setPm(pj.getPm() + 5)
+    pj.pullHa()
+    op = input("Opción:")
+    print("-----------------------------------\n")
+    while op != "1" and op != "2" and op != "3":
+        print("==============================\nOpción incorrecta!\n==============================")
+        pj.pullHa()
+        op = input("Opcion: ")
+        print("-----------------------------------\n")
+    pj.ataqueMagico(enemy, op)
+
+
 # Texto Final de Juego
 def end():
-    print("Henorabuena has sobrevivido al bosque, proximamente mas historia en proximas versiones")
+    print("Henorabuena has sobrevivido al bosque, proximamente mas historia en proximas versiones\n"
+          "======================================================================================\n")
+    Menu()
+
 
 
 Menu()
