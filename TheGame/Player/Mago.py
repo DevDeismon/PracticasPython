@@ -13,9 +13,10 @@ class Mago(Charcter):
             hp = 23
         else:
             raise ValueError("Nivel introducido no existente")
-        Charcter.__init__(self, name, hp, 0, 20, "PJ", lvl)
-        self.setHa(ArmaduradeAgahtis(lvl))
+        Charcter.__init__(self, name, hp, 0, 15, "PJ", lvl)
+
         self.setHa(LlamaSagrada(lvl))
+        self.setHa(ArmaduradeAgahtis(lvl))
         self.setHa(BoladeFuego(lvl))
 
     def pullHa(self):
@@ -45,19 +46,19 @@ class Mago(Charcter):
 
     def ataqueMagico(self, target, action):
         op = int(action)
-        if op == 1 and self.getPm() >= self.getHa()[0].getPmCost():
-            self.restPm(0)
-            self.getHa()[0].armadura(self)
-            print("Armadura magica aplicada. HP actual: ", str(self.getHp()))
-        elif op == 2 and self.getPm() >= self.getHa()[1].getPmCost():
-            self.restPm(1)
+        if op == 1:
+
             esquiva = self.compEsquiva(target)
             if esquiva == 1:
                 print("Ataque esquivado!")
             else:
-                damage = self.getHa()[1].damage()
+                damage = self.getHa()[0].damage()
                 target.resthp(damage)
                 print(target.getName(), " a recibido ", str(damage), " Daño")
+        elif op == 2 and self.getPm() >= self.getHa()[1].getPmCost():
+            self.restPm(1)
+            self.getHa()[1].armadura(self)
+            print("Armadura magica aplicada. HP actual: ", str(self.getHp()))
         elif op == 3 and self.getPm() >= self.getHa()[2].getPmCost():
             self.restPm(2)
             esquiva = self.compEsquiva(target)

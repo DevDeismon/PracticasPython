@@ -91,14 +91,8 @@ class Charcter(object):
             if op == 1:
                 # En caso de que sea la IA quien ataque comprobamos si el objetivo tiene la etiqueta PJ si es asi se
                 # realiza el ataque pero reducido por la CA del Jugador
-                if attacked.getType() == "PJ":
-                    if attacked.getName() == "Copernico":
-                        f = attacked.getHa[0].getDamageOn()
-                        if f:
-                            damage = attacked.getHa[0].damage()
-                            self.resthp(damage)
-                            print(self.getName(), " ha recibido ", str(damage), " daño de la armadura magica")
 
+                if attacked.getType() == "PJ":
                     damage = self.getHa()[0].damage() - attacked.getCa()
                     if damage < 0:
                         damage = 0
@@ -117,13 +111,6 @@ class Charcter(object):
                     print("El lobo se a curado ", str(self.aullar()), " HP\n",
                           "Vida actual:", self.getHp())
                 elif attacked.getType() == "PJ":
-                    if attacked.getName() == "Copernico":
-                        f = attacked.getHa[0].getDamageOn()
-                        if f:
-                            damage = attacked.getHa[0].damage()
-                            self.resthp(damage)
-                            print(self.getName(), " ha recibido ", str(damage), " daño de la armadura magica")
-
                     damage = self.getHa()[1].damage() - attacked.getCa()
                     if damage < 0:
                         damage = 0
@@ -148,6 +135,13 @@ class Charcter(object):
         for i in range(3):
             self.getHa()[i].setLvl(1)
         self.setTimeOff(False)
+        if self.getName() == "Copernico":
+            if self.getLvl()==1:
+                self.setPm(15)
+            elif self.getLvl()==2:
+                self.setPm(20)
+            elif self.getLvl()==3:
+                self.setPm(25)
 
     # Muestra el pull de Habilidades del CHaracter. Si esta activo el cooldown, mostrara otro pull
     def pullHa(self):
@@ -178,7 +172,12 @@ class Charcter(object):
             self.getHa()[i].setLvl(self.getHa()[i].getLvl() + 1)
         self.resetHp()
         if self.getName() == "Copernico":
-            self.setPm()
+            if self.getLvl()==1:
+                self.setPm(15)
+            elif self.getLvl()==2:
+                self.setPm(20)
+            elif self.getLvl()==3:
+                self.setPm(25)
 
     def compEsquiva(self, attacked):
         esquiva = 0

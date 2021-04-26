@@ -8,6 +8,7 @@ class Skill:
     __pMCost = 0
     __damage = 0
     __lvl = 0
+    __isDamage = False
 
     # constructor
     def __init__(self, name, desc, lvl, pM):
@@ -17,6 +18,13 @@ class Skill:
         self.__pMCost = pM
 
     # Getters/Setters
+
+    def getDamageOn(self):
+        return self.__isDamage
+
+    def setDamageOn(self, Y):
+        self.__isDamage = Y
+
     def getName(self):
         return self.__name
 
@@ -188,17 +196,9 @@ class Estocada(Skill):
 
 
 class ArmaduradeAgahtis(Skill):
-    __damageOn = False
-
     def __init__(self, lvl):
         Skill.__init__(self, "Armadura de Agahtis", "Armadura magica que umenta la vida y produce daño a los enemigos",
                        lvl, 5)
-
-    def getDamageOn(self):
-        return self.__damageOn
-
-    def setDamageOn(self, Y):
-        self.__damageOn = Y
 
     def lvlup(self):
         if self.getLvl() == 1:
@@ -233,7 +233,7 @@ class ArmaduradeAgahtis(Skill):
 
 class LlamaSagrada(Skill):
     def __init__(self, lvl):
-        Skill.__init__(self, "Llama Sagrada", "Ataque incenciario", lvl, 5)
+        Skill.__init__(self, "Llama Sagrada", "Ataque incenciario", lvl, 0)
 
     def damage(self):
         if self.getLvl() == 1:
@@ -268,9 +268,6 @@ class BoladeFuego(Skill):
 
 
 class Esquiva(Skill):
-    esquiva = 0
-    r = 0
-
     def __init__(self, lvl):
         Skill.__init__(self, "Esquiva", "Probabilidad de evitar el daño", lvl, 0)
 

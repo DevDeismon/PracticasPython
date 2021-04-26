@@ -224,8 +224,8 @@ def turnoIA(enemy, pj):
 
 
 def turnoMagico(pj, enemy):
-    if pj.getPm() < 20:
-        pj.setPm(pj.getPm() + 5)
+    if pj.getPm() < 15:
+        pj.setPm(pj.getPm() + 2)
     pj.pullHa()
     op = input("Opción:")
     print("-----------------------------------\n")
