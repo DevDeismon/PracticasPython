@@ -8,7 +8,6 @@ class Skill:
     __pMCost = 0
     __damage = 0
     __lvl = 0
-    __isDamage = False
 
     # constructor
     def __init__(self, name, desc, lvl, pM):
@@ -18,12 +17,6 @@ class Skill:
         self.__pMCost = pM
 
     # Getters/Setters
-
-    def getDamageOn(self):
-        return self.__isDamage
-
-    def setDamageOn(self, Y):
-        self.__isDamage = Y
 
     def getName(self):
         return self.__name
@@ -165,13 +158,13 @@ class Zarpazo(Skill):
 
     def damage(self):
         if self.getLvl() == 1:
-            self.setDamage(randint(4, 5))
+            self.setDamage(randint(2, 5))
             return self.getDamage()
         elif self.getLvl() == 2:
-            self.setDamage(randint(3, 7))
+            self.setDamage(randint(3, 6))
             return self.getDamage()
         elif self.getLvl() == 3:
-            self.setDamage(randint(8, 9))
+            self.setDamage(randint(6, 9))
             return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
@@ -183,38 +176,38 @@ class Estocada(Skill):
 
     def damage(self):
         if self.getLvl() == 1:
-            self.setDamage(randint(2, 9))
+            self.setDamage(randint(3, 6))
             return self.getDamage()
         elif self.getLvl() == 2:
-            self.setDamage(randint(3, 10))
+            self.setDamage(randint(5, 9))
             return self.getDamage()
         elif self.getLvl() == 3:
-            self.setDamage(randint(4, 11))
+            self.setDamage(randint(8, 10))
             return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
 
 
 class ArmaduradeAgahtis(Skill):
+    __isDamage = False
+
     def __init__(self, lvl):
         Skill.__init__(self, "Armadura de Agahtis", "Armadura magica que umenta la vida y produce daño a los enemigos",
                        lvl, 5)
 
-    def lvlup(self):
-        if self.getLvl() == 1:
-            self.setPmCost(5)
-        elif self.getLvl() == 2:
-            self.setPmCost(10)
-        elif self.getLvl() == 3:
-            self.setPmCost(15)
+    def getDamageOn(self):
+        return self.__isDamage
+
+    def setDamageOn(self, Y):
+        self.__isDamage = Y
 
     def armadura(self, player):
         if self.getLvl() == 1:
-            player.setHP(player.getHp() + 3)
-        elif self.getLvl() == 2:
             player.setHP(player.getHp() + 5)
-        elif self.getLvl() == 3:
+        elif self.getLvl() == 2:
             player.setHP(player.getHp() + 7)
+        elif self.getLvl() == 3:
+            player.setHP(player.getHp() + 9)
         self.setDamageOn(True)
 
     def damage(self):
@@ -237,13 +230,13 @@ class LlamaSagrada(Skill):
 
     def damage(self):
         if self.getLvl() == 1:
-            self.setDamage(randint(2, 5))
+            self.setDamage(randint(3, 6))
             return self.getDamage()
         elif self.getLvl() == 2:
-            self.setDamage(randint(4, 7))
+            self.setDamage(randint(5, 8))
             return self.getDamage()
         elif self.getLvl() == 3:
-            self.setDamage(randint(6, 9))
+            self.setDamage(randint(7, 10))
             return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
@@ -255,13 +248,13 @@ class BoladeFuego(Skill):
 
     def damage(self):
         if self.getLvl() == 1:
-            self.setDamage(randint(3, 6))
-            return self.getDamage()
-        elif self.getLvl() == 2:
             self.setDamage(randint(5, 8))
             return self.getDamage()
-        elif self.getLvl() == 3:
+        elif self.getLvl() == 2:
             self.setDamage(randint(7, 10))
+            return self.getDamage()
+        elif self.getLvl() == 3:
+            self.setDamage(randint(9, 12))
             return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
@@ -281,15 +274,15 @@ class Esquiva(Skill):
                     return 1
             elif self.getLvl() == 2:
                 self.r = uniform(0, 1)
-                if self.r <= 0.60:
+                if self.r <= 0.70:
                     return 0
-                elif self.r >= 0.61:
+                elif self.r >= 0.71:
                     return 1
             elif self.getLvl() == 3:
                 self.r = uniform(0, 1)
-                if self.r <= 0.34:
+                if self.r <= 0.44:
                     return 0
-                elif self.r >= 0.35:
+                elif self.r >= 0.45:
                     return 1
             else:
                 raise ValueError("Nivel introducido no existente")

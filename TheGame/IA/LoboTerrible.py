@@ -4,7 +4,7 @@ from TheGame.Skills.Skill import *
 
 class LoboTerrible(Charcter):
     def __init__(self):
-        Charcter.__init__(self, "Lobo Terrible", 37, 0, 0, "IA", 3)
+        Charcter.__init__(self, "Lobo Terrible", 50, 0, 0, "IA", 3)
         self.setHa(Zarpazo(self.getLvl()))
         self.setHa(Aullido(self.getLvl()))
         self.setHa(Esquiva(self.getLvl()))
@@ -12,10 +12,10 @@ class LoboTerrible(Charcter):
     def aullar(self):
         cura = self.getHa()[1].aullido()
 
-        if self.getHp() < 37:
-            if (self.getHp() + cura) > 37:
-                resto = 37 - self.getHp()
-                self.setHP(37)
+        if self.getHp() < 50:
+            if (self.getHp() + cura) > 50:
+                resto = 50 - self.getHp()
+                self.setHP(50)
                 return resto
             else:
                 self.setHP(self.getHp() + cura)

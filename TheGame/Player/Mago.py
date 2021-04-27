@@ -13,7 +13,7 @@ class Mago(Charcter):
             hp = 23
         else:
             raise ValueError("Nivel introducido no existente")
-        Charcter.__init__(self, name, hp, 0, 15, "PJ", lvl)
+        Charcter.__init__(self, name, hp, 0, 20, "PJ", lvl)
 
         self.setHa(LlamaSagrada(lvl))
         self.setHa(ArmaduradeAgahtis(lvl))
@@ -50,15 +50,15 @@ class Mago(Charcter):
 
             esquiva = self.compEsquiva(target)
             if esquiva == 1:
-                print("Ataque esquivado!")
+                print("Ataque esquivado!\n")
             else:
                 damage = self.getHa()[0].damage()
                 target.resthp(damage)
-                print(target.getName(), " a recibido ", str(damage), " Daño")
+                print(target.getName(), " a recibido ", str(damage), " daño\n")
         elif op == 2 and self.getPm() >= self.getHa()[1].getPmCost():
             self.restPm(1)
             self.getHa()[1].armadura(self)
-            print("Armadura magica aplicada. HP actual: ", str(self.getHp()))
+            print("Armadura magica aplicada. HP actual: ", str(self.getHp()), "\n")
         elif op == 3 and self.getPm() >= self.getHa()[2].getPmCost():
             self.restPm(2)
             esquiva = self.compEsquiva(target)
@@ -67,7 +67,7 @@ class Mago(Charcter):
             else:
                 damage = self.getHa()[2].damage()
                 target.resthp(damage)
-                print(target.getName(), " a recibido ", str(damage))
+                print(target.getName(), " a recibido ", str(damage), "daño\n")
         else:
             print("==============================\nNo tienes suficiente puntos Magicos\n==============================")
             self.pullHa()
@@ -76,3 +76,9 @@ class Mago(Charcter):
 
     def restPm(self, x):
         self.setPm(self.getPm() - self.getHa()[x].getPmCost())
+
+    def passivDamage(self, target):
+        if self.getHa()[1].getDamageOn():
+            damage = self.getHa()[1].damage()
+            target.resthp(damage)
+            print(target.getName(), " a recibido ", str(damage), " daño por armadura magica")

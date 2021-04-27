@@ -5,15 +5,7 @@ from TheGame.Skills.Skill import *
 class Paladin(Charcter):
 
     def __init__(self, name, lvl):
-        if lvl == 1:
-            hp = 15
-        elif lvl == 2:
-            hp = 25
-        elif lvl == 3:
-            hp = 35
-        else:
-            raise ValueError("Nivel introducido no existente")
-        Charcter.__init__(self, name, hp, 2, 0, "PJ", lvl)
+        Charcter.__init__(self, name, 15, 2, 0, "PJ", lvl)
         self.setHa(Tajo(lvl))
         self.setHa(Estocada(lvl))
         self.setHa(Escudo(lvl))
