@@ -105,6 +105,10 @@ class Charcter(object):
                     print(attacked.getName(), " a recibido ", str(damage),
                           " daño reducido por la CA\n*********************************************\n")
                 else:
+                    if attacked.getType() == "Rata Gigante":
+                        passivDamage = attacked.getHa[0].poison()
+                        self.resthp(passivDamage)
+
                     damage = self.getHa()[0].damage()
                     attacked.resthp(damage)
                     print(attacked.getName(), " a recibido ", str(damage),
@@ -169,20 +173,31 @@ class Charcter(object):
 
     # Efectua una subida de nivel al Character
     def lvlUp(self):
-        self.setTimeOff(False)
+        if self.getType() == "PJ":
 
-        self.setLvl(self.getLvl() + 1)
-        for i in range(3):
-            self.getHa()[i].setLvl(self.getHa()[i].getLvl() + 1)
-        self.resetHp()
-        if self.getName() == "Copernico":
-            self.getHa()[1].setDamageOn(False)
+            self.setTimeOff(False)
+
+            self.setLvl(self.getLvl() + 1)
+            for i in range(3):
+                self.getHa()[i].setLvl(self.getHa()[i].getLvl() + 1)
+
+            self.resetHp()
+            if self.getName() == "Copernico":
+                self.getHa()[1].setDamageOn(False)
+                if self.getLvl() == 1:
+                    self.setPm(20)
+                elif self.getLvl() == 2:
+                    self.setPm(25)
+                elif self.getLvl() == 3:
+                    self.setPm(30)
+        else:
             if self.getLvl() == 1:
-                self.setPm(20)
+                self.setHP(self.getHp() + 20)
             elif self.getLvl() == 2:
-                self.setPm(25)
-            elif self.getLvl() == 3:
-                self.setPm(30)
+                self.setHP(self.getHp() + 10)
+            self.setLvl(self.getLvl() + 1)
+            for i in range(3):
+                self.getHa()[i].setLvl(self.getHa()[i].getLvl() + 1)
 
     # Se comprueba si el target tiene la Habilidad esquivar
     def compEsquiva(self, attacked):

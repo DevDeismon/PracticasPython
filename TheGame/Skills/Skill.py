@@ -71,6 +71,7 @@ class Skill:
             raise ValueError("Nivel introducido no existente")
 
 
+# Habilidad que genera un daño aleatorio segun el nivel
 class Tajo(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Tajo", "Corte estandar para atacar al enemigo", lvl, 0)
@@ -89,6 +90,7 @@ class Tajo(Skill):
             raise ValueError("Nivel introducido no existente")
 
 
+# Habilidad que genera un daño aleatorio segun el nivel con probabilidad de generar daño extra por critico
 class Furtivo(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Furtivo", "Puñalada trapera con probabilidad de critico", lvl, 0)
@@ -122,15 +124,25 @@ class Furtivo(Skill):
             raise ValueError("Nivel introducido no existente")
 
 
+# Habilidad con probailidad de envenenar al jugador
 class Mordisco(Skill):
+    __passivDamage = False
+
     def __init__(self, lvl):
         Skill.__init__(self, "Mordico", "Ataque realizado por un animal para hacer daño", lvl, 0)
+
+    def getPassivDamage(self):
+        return self.__passivDamage
+
+    def setPassivDamage(self, Y):
+        self.__passivDamage = Y
 
     def damage(self):
         if self.getLvl() == 1:
             if self.probability() == 1:
                 print("Veneno!")
                 self.setDamage(randint(2, 3))
+                self.setPassivDamage(True)
             else:
                 self.setDamage(randint(2, 3))
             return self.getDamage()
@@ -138,6 +150,7 @@ class Mordisco(Skill):
             if self.probability() == 1:
                 print("Veneno!")
                 self.setDamage(randint(4, 5))
+                self.setPassivDamage(True)
             else:
                 self.setDamage(randint(4, 5))
             return self.getDamage()
@@ -145,13 +158,21 @@ class Mordisco(Skill):
             if self.probability() == 1:
                 print("Veneno!")
                 self.setDamage(randint(6, 7))
+                self.setPassivDamage(True)
             else:
                 self.setDamage(randint(6, 7))
             return self.getDamage()
         else:
             raise ValueError("Nivel introducido no existente")
 
+    def poison(self):
+        if self.getPassivDamage():
+            return randint(1, 4)
+        else:
+            return 0
 
+
+# Habilidad de ataque normal con un poco mas de daño
 class Zarpazo(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Zarpazo", "Ataque realizado por un animal para hacer daño", lvl, 0)
@@ -170,6 +191,7 @@ class Zarpazo(Skill):
             raise ValueError("Nivel introducido no existente")
 
 
+# Habilidad de ataque normal con un poco mas de daño
 class Estocada(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Estocada", "Ataque en linea recta", lvl, 0)
@@ -188,6 +210,7 @@ class Estocada(Skill):
             raise ValueError("Nivel introducido no existente")
 
 
+# Habilidad de que suma vida al usuario y activa daños pasivos al enemigo
 class ArmaduradeAgahtis(Skill):
     __isDamage = False
 
@@ -224,6 +247,7 @@ class ArmaduradeAgahtis(Skill):
             raise ValueError("Nivel introducido no existente")
 
 
+# Habilidad normal con daños aleatorios
 class LlamaSagrada(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Llama Sagrada", "Ataque incenciario", lvl, 0)
@@ -242,6 +266,7 @@ class LlamaSagrada(Skill):
             raise ValueError("Nivel introducido no existente")
 
 
+# Habilidad con gran cantidad de daño
 class BoladeFuego(Skill):
     def __init__(self, lvl):
         Skill.__init__(self, "Bola de fuego", "Ataque incendiario que hace mucho daño", lvl, 15)

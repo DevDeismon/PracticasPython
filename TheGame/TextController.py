@@ -115,5 +115,5 @@ class TextController(object):
 
     # Texto de la IA
     def pullIa(self, IA):
-        print("*********************************************\nAtaca", IA.getName(), "\n"
-                                                                                    "HP actual: ", str(IA.getHp()))
+        print("*************** TURNO DE LA IA ***************\nAtaca", IA.getName(), "\n"
+                                                                                     "HP actual: ", str(IA.getHp()))
