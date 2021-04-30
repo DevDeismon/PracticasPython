@@ -16,6 +16,7 @@ txtC = TextController()
 p = Picaro("Teobaldo", 1)
 pa = Paladin("Jhon", 1)
 m = Mago("Copernico", 1)
+tgm = False
 lvl1 = [RataGigante(), Lobo(), Ladron()]
 lvl2 = [JefeLadron(), LoboGigante()]
 lvl3 = [Asesino(), LoboTerrible()]
@@ -23,6 +24,7 @@ lvl3 = [Asesino(), LoboTerrible()]
 
 # Menu principal del Juego
 def Menu():
+    global tgm
     txtC.intro()
     op = input()
     if op == "1":
@@ -60,6 +62,10 @@ def Menu():
     elif op == "4":
         print("Exit")
         exit()
+    elif op == "tgm":
+        print("God Mode Acive!")
+        tgm = True
+        Menu()
     else:
         print("==============================\nOpción erronea!\n==============================")
         Menu()
@@ -68,6 +74,9 @@ def Menu():
 # Controlador de turnos y cuando ha ganado el Jugador o la IA
 def encuentro(pj):
     for x in range(3):
+        if tgm:
+            pj.setHP(10000)
+            pj.setPm(10000)
         i = 1
         if pj.getLvl() == 1:
             enemy = generarlvl1()
@@ -78,6 +87,8 @@ def encuentro(pj):
             enemy = generarlvl3()
 
         txtC.encuentro(pj, enemy)
+        if tgm:
+            txtC.perfilEnemy(enemy)
         while enemy.getHp() > 0 and pj.getHp() > 0:
             print("Turno", str(i))
             if pj.getName() == "Copernico":
@@ -121,6 +132,9 @@ def generarlvl3():
 
 # Controlador del turno del Jugador
 def turnoPj(pj, enemy, turn):
+    if tgm:
+        pj.setTimeOff(False)
+
     if turn == pj.getTiempoLimite():
         pj.setTimeOff(False)
     pj.pullHa()
@@ -162,6 +176,7 @@ def turnoIA(enemy, pj):
     txtC.pullIa(enemy)
     atk = randint(1, 2)
     enemy.ataque(pj, atk)
+
 
 # Subimos la dificultad de los encuentro 2 y 3 al añadir un enemigo del nivel bajo al siguiente
 def lvlUpEnemy(pj):

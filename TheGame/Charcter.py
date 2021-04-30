@@ -192,9 +192,10 @@ class Charcter(object):
                     self.setPm(30)
         else:
             if self.getLvl() == 1:
-                self.setHP(self.getHp() + 20)
+                self.setHP(30)
             elif self.getLvl() == 2:
-                self.setHP(self.getHp() + 10)
+                self.setHP(50)
+
             self.setLvl(self.getLvl() + 1)
             for i in range(3):
                 self.getHa()[i].setLvl(self.getHa()[i].getLvl() + 1)

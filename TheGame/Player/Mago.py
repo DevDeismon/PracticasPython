@@ -72,6 +72,11 @@ class Mago(Charcter):
             print("==============================\nNo tienes suficiente puntos Magicos\n==============================")
             self.pullHa()
             op = input("Opcion:")
+            while op != "1" and op != "2" and op != "3":
+                print("==============================\nOpción incorrecta!\n==============================")
+                self.pullHa()
+                op = input("Opcion: ")
+                print("-----------------------------------\n")
             self.ataqueMagico(target, op)
 
     def restPm(self, x):

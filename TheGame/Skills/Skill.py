@@ -366,3 +366,11 @@ class Escudo(Skill):
             return 3
         else:
             raise ValueError("Nivel introducido no existente")
+
+
+class InstaKill(Skill):
+    def __init__(self):
+        Skill.__init__(self, "Insta kill", "Te miro y te destruyo", 20, 0)
+
+    def damage(self):
+        return 1000

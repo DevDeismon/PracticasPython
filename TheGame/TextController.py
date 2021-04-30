@@ -117,3 +117,11 @@ class TextController(object):
     def pullIa(self, IA):
         print("*************** TURNO DE LA IA ***************\nAtaca", IA.getName(), "\n"
                                                                                      "HP actual: ", str(IA.getHp()))
+
+    def perfilEnemy(self, enemy):
+        print("Nombre:", enemy.getName(), "\n"
+                                          "Vida:", enemy.getHp(), "\n"
+                                                                  "Habilidades:\n"
+              , str(enemy.getHa()[0].getName()), ".\n"
+              , str(enemy.getHa()[1].getName()), ". \n"
+              , str(enemy.getHa()[2].getName()), ".")
