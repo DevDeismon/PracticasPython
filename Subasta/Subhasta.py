@@ -8,7 +8,7 @@ class Subhasta(object):
     __propietario = Usuari
     __estado = True
     __pujas = list()
-    __pujaAlta = Puja
+    __pujaAlta = Puja("", 0)
 
     # Constructor
     def __init__(self, p, pr):
@@ -55,7 +55,7 @@ class Subhasta(object):
             self.setPujaAlta(puja)
 
     def pujar1(self, usuari):
-        cantidad = self.getPujaAlta() + 1
+        cantidad = self.getPujaAlta().getPuja() + 1
         if self.__controlError(usuari, cantidad):
             puja = Puja(usuari, cantidad)
             self.setPujas(puja)
@@ -65,7 +65,8 @@ class Subhasta(object):
         if self.getEstado():
             self.setEstado(False)
             self.getPujaAlta().getUsuario().decrementarCredito(self.getPujaAlta().getPuja())
-            self.getPropietario().incrementarCredito(self.getPujaAlta())
+            self.getPropietario().incrementarCredito(self.getPujaAlta().getPuja())
+            print("Se ha cerrado la puja")
             return True
         else:
             print("Ya esta cerrado")
@@ -84,7 +85,8 @@ class Subhasta(object):
             return False
 
     def __isPujaAlta(self, cantidad):
-        if cantidad > self.getPujaAlta().getPuja():
+        num = self.getPujaAlta().getPuja()
+        if cantidad > num:
             return True
         else:
             return False
