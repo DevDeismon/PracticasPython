@@ -1,11 +1,11 @@
 class Usuari(object):
     __credito = 0
     __nombre = ""
-    __subhastas = list()
 
     def __init__(self, nombre, credito):
         self.__nombre = nombre
         self.__credito = credito
+        self.__subhastas = list()
 
     def incrementarCredito(self, c):
         self.setCredito(self.getCredito() + c)

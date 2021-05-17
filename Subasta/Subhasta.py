@@ -5,7 +5,7 @@ from Subasta.Usuari import Usuari
 class Subhasta(object):
     # Atributs
     __producto = ""
-    __propietario = Usuari
+    __propietario = Usuari("", 0)
     __estado = True
     __pujas = list()
     __pujaAlta = Puja("", 0)
@@ -14,7 +14,7 @@ class Subhasta(object):
     def __init__(self, p, pr):
         self.__producto = p
         self.__propietario = pr
-        self.__propietario.setSubHastas(self)
+        pr.setSubHastas(self)
 
     # Getters/Setters
     def getProducto(self):
